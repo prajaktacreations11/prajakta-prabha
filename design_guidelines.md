@@ -55,9 +55,11 @@
 
 ### Photo Slideshow/Carousel
 **Hero-style carousel on home page:**
-- Full-width section: w-full, height: 400px (mobile), 600px (desktop)
-- Slides: Large format photos with subtle gradient overlay on bottom third
-- Overlay content: Small caption text (the slides are visual-only — they carry no per-slide outbound link; see `spec/spec.md` Phase 3)
+- **Not full-width.** Centered, `max-w-3xl` (narrower than every other homepage section's `max-w-6xl`) — a deliberate "spotlight" width distinct from the wide content grids below it. A full-width carousel at a reduced height forces an extreme letterbox ratio (3:1+) that crops a non-panoramic photo (e.g. a portrait shot) down to a sliver; narrowing the carousel instead of just flattening it keeps the crop natural.
+- Aspect ratio: `aspect-[16/9]`, `min-h-[180px]` as a floor on very narrow phones. A true 16:9 photo/video ratio, not a custom flattened one — scales continuously with viewport width, no fixed-height breakpoint jump.
+- Slides: the 3 most recent posts' thumbnails, with a subtle gradient overlay on bottom third — a live discovery surface, not fixed decoration (Phase 12; see `spec/spec.md`)
+- Overlay content: caption (post title); the whole slide is a link to that post
+- Motion: crossfade + slight scale-in on slide change (700ms ease-out), plus a slow continuous zoom ("Ken Burns") on the active slide's image while it's showing, paced to the autoplay interval and paused together with autoplay on hover
 - Controls: Subtle arrow buttons (sides), dot indicators (bottom-center)
 - Auto-play: 5-second interval, pause on hover
 - Position: Below header, above content grid (first section on home)

@@ -17,7 +17,7 @@ export default function AboutPage() {
 
   useDocumentMeta({
     title: 'माझ्याबद्दल (About)',
-    description: 'मी प्राजक्तप्रभा. लेखन, नृत्य आणि गायन हे माझे आवडते छंद आहेत — माझ्याबद्दल अधिक जाणून घ्या.',
+    description: 'नमस्कार, मी प्राजक्ता. लेखन, नृत्य आणि गायन हे माझे आवडते छंद आहेत — माझ्याबद्दल अधिक जाणून घ्या.',
   });
 
   return (
@@ -39,7 +39,7 @@ export default function AboutPage() {
 
         <AboutSection
           image={profileImage}
-          bioMarathi="मी प्राजक्तप्रभा. लेखन, नृत्य आणि गायन हे माझे आवडते छंद आहेत. मी माझ्या कवितांमधून जीवनातील विविध भावना व्यक्त करते. नृत्य माझ्या जीवनाचा एक महत्त्वाचा भाग आहे आणि मी शास्त्रीय नृत्य शिकत आहे. या ब्लॉगच्या माध्यमातून मी माझे विचार, अनुभव आणि सर्जनशीलता तुमच्यासोबत सामायिक करते. माझ्या ब्लॉगवर तुम्हाला कविता, लेख आणि पारंपरिक मराठी उखाणे वाचायला मिळतील. मी आशा करते की माझे लेखन तुम्हाला आवडेल आणि तुम्ही माझ्या या प्रवासाचा भाग व्हाल."
+          bioMarathi="मी प्राजक्ता प्रभा. लेखन, नृत्य आणि गायन हे माझ्या मनाजवळचे छंद. शब्दांमधून भावना व्यक्त करणं आणि कवितेतून आयुष्याचे विविध रंग टिपणं मला मनापासून आवडतं. नृत्य तर माझ्या आयुष्याचा अविभाज्य भागच आहे. माझ्या या ब्लॉगच्या माध्यमातून माझ्या कविता, आयुष्यातले अनुभव आणि विचार तुमच्यापर्यंत पोहोचवण्याचा हा छोटासा प्रयत्न आहे. इथे तुम्हाला कविता, विविध विषयांवरील लेख आणि आपल्या मराठी संस्कृतीची सुंदर परंपरा जपणारे उखाणे वाचायला मिळतील. माझे शब्द आणि माझ्या भावना तुमच्या मनाला कुठेतरी स्पर्शून जाव्यात, एवढीच मनापासून इच्छा."
           bioEnglish="I'm Prajakta Prabha, a passionate writer, dancer, and creative soul. Through my poetry, I express the various emotions and experiences of life. Dance is an integral part of who I am, and I'm trained in classical Indian dance forms. This blog is my platform to share my thoughts, experiences, and creativity with you. Here you'll find poetry that touches the heart, articles about life's moments, and traditional Marathi verses (ukhane). I hope my writing resonates with you and that you'll join me on this creative journey."
           onContact={() => window.location.href = 'mailto:contact@example.com'}
         />

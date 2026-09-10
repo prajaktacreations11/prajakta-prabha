@@ -1,4 +1,5 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useEffect } from "react";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import HomePage from "@/pages/HomePage";
 import CategoryPage from "@/pages/CategoryPage";
 import PostPage from "@/pages/PostPage";
@@ -28,9 +29,22 @@ function AppRoutes() {
   );
 }
 
+// wouter doesn't reset scroll position on navigation the way a full page
+// load would — without this, clicking a nav link while scrolled down on the
+// previous page lands the new page at that same scroll offset, showing its
+// content cut off under the fixed header instead of from the top.
+function ScrollRestoration() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
+
 function App() {
   return (
     <WouterRouter base={basePath}>
+      <ScrollRestoration />
       <ScrollToTop />
       <AppRoutes />
     </WouterRouter>
