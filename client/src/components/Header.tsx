@@ -75,18 +75,8 @@ export default function Header() {
       data-testid="site-header"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="pt-6 pb-4 px-6 md:px-8 text-center border-b">
-          <Link href="/">
-            <h1 className="text-4xl md:text-6xl font-bold font-serif tracking-tight text-primary cursor-pointer hover-elevate inline-block px-4 py-2 rounded-lg" data-testid="site-title">
-              प्राजक्तप्रभा
-            </h1>
-          </Link>
-          <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4" data-testid="site-tagline">
-            Welcome to my blog, where I share my poetry, passion for dance, and more. Writing, dancing, and humming are my joys. 
-            Follow me on Instagram and YouTube for a glimpse into my world.
-          </p>
-          
-          <div className="flex items-center justify-center gap-4 md:gap-6 mt-4" data-testid="social-links">
+        <div className="relative pt-6 pb-4 px-6 md:px-8 text-center border-b">
+          <div className="absolute top-2 right-4 md:right-6 flex items-center gap-2 md:gap-3" data-testid="social-links">
             {SOCIAL_LINKS.map(({ id, name, icon: Icon, url }) => (
               <a
                 key={id}
@@ -97,10 +87,22 @@ export default function Header() {
                 aria-label={name}
                 data-testid={`link-${id}`}
               >
-                <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                <Icon className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               </a>
             ))}
           </div>
+
+          <Link href="/">
+            <h1 className="text-4xl md:text-6xl font-bold font-serif tracking-tight text-primary cursor-pointer hover-elevate inline-block px-4 py-2 rounded-lg" data-testid="site-title">
+              प्राजक्तप्रभा
+            </h1>
+          </Link>
+          <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4" data-testid="site-tagline">
+            Welcome to my blog!
+            <br />
+            काही विचार, काही भावना, काही शब्द…
+            आयुष्यात भेटलेल्या क्षणांना आणि अनुभवांना शब्दांत जपण्याचा हा एक मनापासून केलेला प्रयत्न.
+          </p>
         </div>
 
         <div className="px-6 md:px-8 py-4">
