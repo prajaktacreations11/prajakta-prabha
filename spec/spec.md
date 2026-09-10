@@ -15,7 +15,7 @@ Anything not listed here should be checked against `mission.md`'s non-goals befo
 
 The site is a client-rendered React SPA, live at https://Aditya-1207.github.io/marathi-bytes/. Content is authored as Markdown with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/` and compiled into the JS bundle at build time — there is no runtime database or API. A Decap CMS instance at `/admin` gives the author a web form for creating and editing posts, authenticated in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`) — verified end-to-end with a real published post. See `CLAUDE.md` for full architecture detail.
 
-All nine phases are done: the site is public, the author can self-publish from a browser with no terminal and no help, the category list lives in one module, search and tag browsing work, sharing a post previews as that post (confirmed with a real scraper against the live site), posts show a reading time, an RSS feed exists, every image is compressed with no duplication, a reader can browse the archive by year, by newest, or by tag, and the repo carries no server/database/auth scaffolding it doesn't actually use. There is no open Core or Polish work left on this roadmap; new phases start from a fresh gap against `mission.md`, not from what's below.
+All twelve phases are done: the site is public, the author can self-publish from a browser with no terminal and no help, the category list lives in one module, search and tag browsing work, sharing a post previews as that post (confirmed with a real scraper against the live site), posts show a reading time, an RSS feed exists, every image is compressed with no duplication, a reader can browse the archive by year, by newest, or by tag, the repo carries no server/database/auth scaffolding it doesn't actually use, and the homepage hero carousel links to real posts. There is no open Core or Polish work left on this roadmap; new phases start from a fresh gap against `mission.md`, not from what's below.
 
 ## Phase overview
 
@@ -29,9 +29,12 @@ All nine phases are done: the site is public, the author can self-publish from a
 | 6 | Lighter pages | Polish | Fast to load, cheap to host, stays that way |
 | 7 | Reader conveniences | Polish | Reading time, and a way to follow new work |
 | 8 | Prune unused scaffolding | Polish | The codebase reads as what it actually is |
-| 9 | Archive, latest, and tag-filter blocks | Polish | More ways to browse the archive than the newest-first feed |
+| 9 | Chronological archive view | Polish | A reader can browse posts by year, not only the newest-first feed |
+| 10 | Sitewide "latest" block | Polish | A reader always has a way to see what's newest, from any post |
+| 11 | Tag-filter block (tag cloud) | Polish | A reader gets an at-a-glance sense of what she writes about most |
+| 12 | Content-driven hero carousel | Polish | The homepage hero links to real posts instead of being decoration |
 
-**Sequencing notes.** Phase 2 depends on Phase 1 (the OAuth app and CMS config need a real production URL to authorize against). Phase 3 is deliberately placed before Phase 4 — Phase 4 adds new pages that would otherwise become the fifth and sixth hand-copies of the category list. Phase 8 depends on Phase 1 confirming static hosting as the long-term direction. Phase 9 depends on Phase 4's search/tag plumbing (`getAllTags()`, `/tag/:tag`) already existing — both are done, so it's unblocked. Everything else is independent.
+**Sequencing notes.** Phase 2 depends on Phase 1 (the OAuth app and CMS config need a real production URL to authorize against). Phase 3 is deliberately placed before Phase 4 — Phase 4 adds new pages that would otherwise become the fifth and sixth hand-copies of the category list. Phase 8 depends on Phase 1 confirming static hosting as the long-term direction. Phases 9, 10, and 11 were originally scoped and built as a single phase (see the note at the top of Phase 9) — none of the three needs the others: 9 and 10 are pure derivations of `getAllPosts()`, and 11 depends only on Phase 4's tag plumbing (`getAllTags()`, `/tag/:tag`) already existing, not on 9 or 10. Phase 12 is a pure derivation of `getAllPosts()` too, the same category as 9 and 10. Everything else is independent.
 
 ---
 
@@ -230,21 +233,77 @@ The same sweep also caught three things that aren't shadcn primitives but are th
 
 ---
 
-## Phase 9 — Archive, latest, and tag-filter blocks · Polish · ✅ Done
+## Phase 9 — Chronological archive view · Polish · ✅ Done
 
-**Functionality served:** a reader can browse the site the way `mission.md` itself describes it — *"a personal creative archive"* — by date, by "what's newest," and by theme, not only through the single flat newest-first feed on the homepage.
+**Functionality served:** a reader can browse the site the way `mission.md` itself describes it — *"a personal creative archive"* — by date, not only through the single flat newest-first feed on the homepage.
 
 Before this phase there was exactly one way to browse without already knowing what you want: `HomePage.tsx`'s single paginated grid. Phase 4's `/search` and `/tag/:tag` were destinations, not discovery surfaces — reachable only after clicking a pill on a post already open, or as a fallback on an *empty* `/search`.
 
+**Note:** this phase, Phase 10 (sitewide "latest" block), and Phase 11 (tag-filter block) were originally scoped and shipped as one combined phase, "Archive, latest, and tag-filter blocks." They're split apart here because they're three independently shippable pieces of functionality — none depends on the others — that happened to be built in the same pass. The shared placement decision below (task 1) covers all three; it's repeated in each phase's own words for that reason.
+
 **Tasks**
 
-1. **Decide where each block lives.** *(Done. Tag cloud → the homepage: `design_guidelines.md` already specified a `flex flex-wrap gap-3` "Tag Cloud" grid that had never actually been built as a browsable surface, and Home is the highest-traffic entry point. Archive → a new dedicated `/archive` route, reusing the existing `ContentCard` grid under year headings rather than inventing a new visual pattern — no sidebar was introduced anywhere, since no page on the site uses one and `design_guidelines.md` doesn't define one. Latest → `PostPage` only, not the homepage: Home's existing feed is already sorted newest-first, so a second "latest" teaser there would be redundant with itself; `PostPage`'s existing "More from {category}" section only ever suggests same-category posts, so a sitewide "newest everywhere" strip there is genuinely new value, not a duplicate.)*
+1. **Decide where the archive view lives.** *(Done. A new dedicated `/archive` route, reusing the existing `ContentCard` grid under year headings rather than inventing a new visual pattern — no sidebar was introduced anywhere, since no page on the site uses one and `design_guidelines.md` doesn't define one.)*
 2. **Add a chronological archive/timeline view.** *(Done — `ArchivePage.tsx` at `/archive`, grouping `getAllPosts()` by year, newest year first, reusing `ContentCard` in the same grid every other listing page uses. Grouped by year only, not year-and-month as originally scoped — the current post volume doesn't yet justify a second grouping level, and adding one later is a small, isolated change to `groupByYear()` if it ever does. Linked from the nav — added right after Home in `Header.tsx`, both desktop and mobile — and from a "View the full archive" link under the homepage's tag cloud.)*
-3. **Add a reusable "Latest" block.** *(Done — `LatestPosts.tsx`, parameterized by `count` and an `excludeId` so a post's own page can show "what's new" without listing itself. Placed on `PostPage`, matching the existing "More from {category}" section's exact grid — same narrow `max-w-3xl` container, so a different column count there would have read as visually inconsistent on the one page it appears on.)*
-4. **Add a visible tag-filter block.** *(Done — `TagCloud.tsx` on the homepage. A genuine weighted cloud, not a flat pill list: font size scales across four buckets by each tag's share of `getAllTags()`'s count range, visually distinct from the uniform pill lists on `TagPage`/`SearchPage`, which serve a different purpose — an exhaustive list, not an at-a-glance "what does she write about most" overview. Every tag links into the existing `/tag/:tag` route.)*
-5. **Keep it data-only.** *(Done — all three blocks are pure derivations of `getAllPosts()`/`getAllTags()`. No new dependency, no runtime fetch.)*
+3. **Keep it data-only.** *(Done — a pure derivation of `getAllPosts()`. No new dependency, no runtime fetch.)*
 
-**Done when:** a reader can reach any post through at least one browsing path beyond the flat newest-first feed — by date, by "just published," and by tag — and every one of those paths is reachable from a visible link, not a URL someone has to already know. ✅ Verified in the browser: tag cloud → `/tag/<tag>` navigation confirmed by click; Archive page groups correctly and updates its tab title; `PostPage`'s "Latest Everywhere" strip correctly excludes the post it's shown on. `npm run check` and `npm run build` pass; console clean.
+**Done when:** a reader can reach any post by date, through a link that's visible, not a URL someone has to already know. ✅ Verified in the browser: the Archive page groups correctly and updates its tab title. `npm run check` and `npm run build` pass; console clean.
+
+---
+
+## Phase 10 — Sitewide "latest" block · Polish · ✅ Done
+
+**Functionality served:** from any post, a reader can see what's newest across the whole site — not just other posts in the same category.
+
+Before this phase, `PostPage.tsx`'s only "what else might you like" surface was "More from {category}," which never shows a reader anything outside the category they're already reading.
+
+**Note:** this phase, Phase 9 (chronological archive view), and Phase 11 (tag-filter block) were originally scoped and shipped as one combined phase, "Archive, latest, and tag-filter blocks." They're split apart here because they're three independently shippable pieces of functionality — none depends on the others — that happened to be built in the same pass.
+
+**Tasks**
+
+1. **Decide where the latest block lives.** *(Done — `PostPage` only, not the homepage: Home's existing feed is already sorted newest-first, so a second "latest" teaser there would be redundant with itself; `PostPage`'s existing "More from {category}" section only ever suggests same-category posts, so a sitewide "newest everywhere" strip there is genuinely new value, not a duplicate.)*
+2. **Add a reusable "Latest" block.** *(Done — `LatestPosts.tsx`, parameterized by `count` and an `excludeId` so a post's own page can show "what's new" without listing itself. Placed on `PostPage`, matching the existing "More from {category}" section's exact grid — same narrow `max-w-3xl` container, so a different column count there would have read as visually inconsistent on the one page it appears on.)*
+3. **Keep it data-only.** *(Done — a pure derivation of `getAllPosts()`. No new dependency, no runtime fetch.)*
+
+**Done when:** a reader on any post page can see what's newest sitewide, excluding the post they're already on. ✅ Verified in the browser: `PostPage`'s "Latest Everywhere" strip correctly excludes the post it's shown on. `npm run check` and `npm run build` pass; console clean.
+
+---
+
+## Phase 11 — Tag-filter block (tag cloud) · Polish · ✅ Done
+
+**Functionality served:** a reader gets an at-a-glance sense of what she writes about most, and a one-click way to browse by theme, right from the homepage — not only after opening a post and clicking one of its tags.
+
+`design_guidelines.md` already specified a `flex flex-wrap gap-3` "Tag Cloud" grid that had never actually been built as a browsable surface.
+
+**Note:** this phase, Phase 9 (chronological archive view), and Phase 10 (sitewide "latest" block) were originally scoped and shipped as one combined phase, "Archive, latest, and tag-filter blocks." They're split apart here because they're three independently shippable pieces of functionality — none depends on the others — that happened to be built in the same pass. This is the one of the three that actually depends on prior work: Phase 4's tag plumbing (`getAllTags()`, `/tag/:tag`).
+
+**Tasks**
+
+1. **Decide where the tag cloud lives.** *(Done — the homepage, the site's highest-traffic entry point.)*
+2. **Add a visible tag-filter block.** *(Done — `TagCloud.tsx` on the homepage. A genuine weighted cloud, not a flat pill list: font size scales across four buckets by each tag's share of `getAllTags()`'s count range, visually distinct from the uniform pill lists on `TagPage`/`SearchPage`, which serve a different purpose — an exhaustive list, not an at-a-glance "what does she write about most" overview. Every tag links into the existing `/tag/:tag` route.)*
+3. **Keep it data-only.** *(Done — a pure derivation of `getAllTags()`. No new dependency, no runtime fetch.)*
+
+**Done when:** a reader can see which tags are used most, and reach any tag's posts in one click, from the homepage. ✅ Verified in the browser: tag cloud → `/tag/<tag>` navigation confirmed by click. `npm run check` and `npm run build` pass; console clean.
+
+---
+
+## Phase 12 — Content-driven hero carousel · Polish · ✅ Done
+
+**Functionality served:** the homepage hero becomes a real discovery surface — each slide links to an actual post — instead of three fixed decorative images that lead nowhere.
+
+Phase 3 stripped the carousel's "View on Instagram →" links because they pointed at placeholder URLs that 404'd, leaving `HomePage.tsx`'s `carouselSlides` as a hardcoded, non-clickable array (see `HeroCarousel.tsx` — the slide images and captions carry no `<Link>`/`onClick` at all, only the prev/next arrows and dot indicators are interactive). That was the right call at the time — a dead link is worse than no link — but the carousel has stayed purely cosmetic ever since, duplicating no other section's *purpose* but also adding none of its own, right above `TagCloud` and `PostGrid`, which already do real discovery work.
+
+**Tasks**
+
+1. **Decide the selection and count.** *(Done — the 3 most recent posts from `getAllPosts()`, no new frontmatter field, no CMS change. A `featured: true` flag was considered and deferred: it would need a new Decap `config.yml` field, an authoring-guide update, and a decision for zero/many-flagged posts — not justified while "most recent" already surfaces her latest work, the same reasoning Phase 9/10 used to keep their blocks pure derivations of `getAllPosts()`.)*
+2. **Wire slide data from posts, not a hardcoded array.** *(Done — `HomePage.tsx`'s `carouselSlides` is now built from `getAllPosts()`: image from `post.thumbnail` (already resolved by `parsePosts()`, no second `resolveAssetPath()` call needed), caption from `post.title`, and a link target of `` `/post/${post.id}` `` — the same relative path `ContentCard.tsx` already uses, not `postUrl()`, which builds a fully-qualified `https://...` URL for canonical/OG tags and would have forced a full page reload instead of client-side routing.)*
+3. **Make `HeroCarousel` navigable.** *(Done — `Slide` now takes a required `href`; each slide's image, gradient overlay, and caption are wrapped in a `wouter` `<Link className="absolute inset-0 block">`, matching how `TagPill` became a real `<Link>` in Phase 4. Verified in the browser: the prev/next buttons and dot indicators, rendered as later siblings outside the `Link`, are unaffected — clicking "next" advances slides without navigating, confirmed via the URL/title staying on `/`.)*
+4. **Handle sparse-content edge cases.** *(Done — no new component logic needed. The live site currently has exactly 2 posts; `getAllPosts().slice(0, 3)` naturally returns 2, `HeroCarousel`'s existing `slides.length === 0` → `null` and `slides.length <= 1` → no-autoplay guards cover the rest. Verified in the browser with the real 2-post corpus: both slides render, both indicator dots work, autoplay correctly does not fire the single-slide code path since there are 2.)*
+5. **Address the duplicate-thumbnail case.** *(Done — added `getFeaturedPosts()` in `HomePage.tsx`: walks `getAllPosts()` and skips a post whose `thumbnail` string exactly matches the immediately-preceding selected slide's, pulling from further down the list instead; falls back to allowing a repeat rather than shrinking the carousel below `count` if there aren't enough posts with distinct thumbnails. Not exercised by the current 2-post corpus — both existing posts set their own distinct thumbnail — but in place before a third same-category, thumbnail-less post makes it live.)*
+6. **Remove the now-dead hardcoded slide data.** *(Done — the fixed `carouselSlides` array and its Phase-3-era "visual-only" comment are gone from `HomePage.tsx`. Confirmed `HeroCarousel`'s `slides` prop has exactly one consumer.)*
+7. **Verify.** *(Done — `npm run check` and `npm run build` both pass. Browser-verified against the live dev server: clicking a slide (both the wedding-thumbnail slide and the poetry-thumbnail slide) opens that exact post — confirmed via URL, tab title, and full rendered post content, not just a route change; the "next" arrow switches slides without navigating; console clean throughout.)*
+
+**Done when:** the homepage hero shows real posts, clicking (or tapping) a slide opens that post, and no hardcoded placeholder image data remains in `HomePage.tsx`. ✅ Confirmed 2026-09-10.
 
 ---
 
