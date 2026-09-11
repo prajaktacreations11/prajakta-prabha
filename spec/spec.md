@@ -13,7 +13,7 @@ Anything not listed here should be checked against `mission.md`'s non-goals befo
 
 ## Current state
 
-The site is a client-rendered React SPA, live at https://Aditya-1207.github.io/marathi-bytes/. Content is authored as Markdown with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/` and compiled into the JS bundle at build time — there is no runtime database or API. A Decap CMS instance at `/admin` gives the author a web form for creating and editing posts, authenticated in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`) — verified end-to-end with a real published post. See `CLAUDE.md` for full architecture detail.
+The site is a client-rendered React SPA, live at https://prajaktacreations11.github.io/marathi-bytes/. Content is authored as Markdown with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/` and compiled into the JS bundle at build time — there is no runtime database or API. A Decap CMS instance at `/admin` gives the author a web form for creating and editing posts, authenticated in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`) — verified end-to-end with a real published post. See `CLAUDE.md` for full architecture detail.
 
 All twelve phases are done: the site is public, the author can self-publish from a browser with no terminal and no help, the category list lives in one module, search and tag browsing work, sharing a post previews as that post (confirmed with a real scraper against the live site), posts show a reading time, an RSS feed exists, every image is compressed with no duplication, a reader can browse the archive by year, by newest, or by tag, the repo carries no server/database/auth scaffolding it doesn't actually use, and the homepage hero carousel links to real posts. There is no open Core or Polish work left on this roadmap; new phases start from a fresh gap against `mission.md`, not from what's below.
 
@@ -40,7 +40,7 @@ All twelve phases are done: the site is public, the author can self-publish from
 
 ## Phase 1 — Public deployment · Core · ✅ Done
 
-Live at https://Aditya-1207.github.io/marathi-bytes/.
+Live at https://prajaktacreations11.github.io/marathi-bytes/.
 
 **Functionality served:** the site is reachable at a public URL. Until this exists, no reader-facing part of the mission is real, and Phase 2 has nothing to authorize against.
 
@@ -62,13 +62,13 @@ Today `vite.config.ts` sets no `base` path and there is no deploy workflow, so n
 
 **Functionality served:** the author can publish a new poem herself, from a browser, with no terminal and no help. This is the single most load-bearing promise in `mission.md`.
 
-Decap CMS at `/admin` now authenticates in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`, deployed at `https://marathibytes-decap-oauth.kulkarni-aditya12.workers.dev`). The author has her own GitHub account with push access to `Aditya-1207/marathi-bytes` and has published a real post end-to-end: logged in at `/admin`, created and published a poem, the commit landed on `main`, the deploy workflow rebuilt the site, and the post appeared live.
+Decap CMS at `/admin` now authenticates in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`, deployed at `https://marathibytes-decap-oauth.kulkarni-aditya12.workers.dev`). The author has her own GitHub account, which now owns `prajaktacreations11/marathi-bytes`, and has published a real post end-to-end: logged in at `/admin`, created and published a poem, the commit landed on `main`, the deploy workflow rebuilt the site, and the post appeared live.
 
 **Decision (2026-08-20):** the author (Aditya's wife) will use a dedicated GitHub account, tied to a dedicated Gmail kept separate from her personal one, and log in through GitHub's own screen — not a "Sign in with Google" button. The alternative (Netlify Identity + Git Gateway, which does offer literal Google sign-in) was ruled out to avoid depending on a second hosting platform just for auth. See `AUTHORING.md` for what she'll actually see.
 
 **Tasks**
 
-1. **Register a GitHub OAuth App** for the production domain. Purpose: give Decap a real identity to authenticate the author against the `Aditya-1207/marathi-bytes` repo. *(Done — `MarathiBytes CMS` OAuth App registered, callback URL points at the Worker.)*
+1. **Register a GitHub OAuth App** for the production domain. Purpose: give Decap a real identity to authenticate the author against the `prajaktacreations11/marathi-bytes` repo. *(Done — `MarathiBytes CMS` OAuth App registered, callback URL points at the Worker.)*
 2. **Deploy the auth proxy.** Purpose: Decap's GitHub backend needs a small server-side token exchange; built as a Cloudflare Worker in `oauth-proxy/` — this is the one piece that cannot be static. *(Done — deployed as `marathibytes-decap-oauth` on the `kulkarni-aditya12.workers.dev` subdomain, with `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, and `OAUTH_STATE_SECRET` set as Worker secrets.)*
 3. **Point the CMS at the proxy.** Purpose: update `config.yml` with the proxy's `base_url`/`auth_endpoint`. *(Done — `base_url` set to the real Worker URL and merged to `main`.)*
 4. **Confirm `local_backend` behaviour is correct for both modes.** Purpose: make sure local testing still works without the local flag hijacking the production login. *(Confirmed: Decap only engages the local proxy when the CMS is loaded from `localhost`, so `local_backend: true` is inert in production — no code change needed, documented in `config.yml`.)*
