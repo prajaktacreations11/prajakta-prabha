@@ -16,7 +16,7 @@ each time you want to publish something.
 
 ## Publishing a post
 
-1. Go to **https://Aditya-1207.github.io/marathi-bytes/admin/**
+1. Go to **https://prajaktacreations11.github.io/marathi-bytes/admin/**
 2. Click **Login with GitHub**.
    - First time only: GitHub will ask you to sign in (use the account from setup)
      and then ask you to approve access — click **Authorize**.

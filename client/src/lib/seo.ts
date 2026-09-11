@@ -6,7 +6,7 @@
  */
 
 /** Must match `spec/tech-stack.md`'s recorded hosting decision (Phase 1). */
-export const SITE_ORIGIN = 'https://Aditya-1207.github.io';
+export const SITE_ORIGIN = 'https://prajaktacreations11.github.io';
 
 /**
  * Must match `base` in vite.config.ts's production branch. Not derived from

@@ -16,13 +16,13 @@ secret has to live somewhere the browser can't read it.
 
 ### 1. Create the GitHub OAuth App
 
-In the GitHub account that owns the repo (`Aditya-1207`):
+In the GitHub account that owns the repo (`prajaktacreations11`):
 
 1. Go to **Settings → Developer settings → OAuth Apps → New OAuth App**
    (direct link: https://github.com/settings/applications/new)
 2. Fill in:
    - **Application name**: `MarathiBytes CMS` (anything recognizable)
-   - **Homepage URL**: `https://Aditya-1207.github.io/marathi-bytes/`
+   - **Homepage URL**: `https://prajaktacreations11.github.io/marathi-bytes/`
    - **Authorization callback URL**: `https://<your-worker-subdomain>.workers.dev/callback`
      (you'll get the real `workers.dev` URL after the first `wrangler deploy` in step 2 —
      deploy once to see it, then come back and fill in this field, or add a custom
