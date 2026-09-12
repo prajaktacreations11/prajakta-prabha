@@ -13,9 +13,9 @@ Anything not listed here should be checked against `mission.md`'s non-goals befo
 
 ## Current state
 
-The site is a client-rendered React SPA, live at https://prajaktacreations11.github.io/marathi-bytes/. Content is authored as Markdown with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/` and compiled into the JS bundle at build time — there is no runtime database or API. A Decap CMS instance at `/admin` gives the author a web form for creating and editing posts, authenticated in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`) — verified end-to-end with a real published post. See `CLAUDE.md` for full architecture detail.
+The site is a client-rendered React SPA, live at https://prajaktacreations11.github.io/prajakta-prabha/. Content is authored as Markdown with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/` and compiled into the JS bundle at build time — there is no runtime database or API. A Decap CMS instance at `/admin` gives the author a web form for creating and editing posts, authenticated in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`) — verified end-to-end with a real published post. See `CLAUDE.md` for full architecture detail.
 
-All twelve phases are done: the site is public, the author can self-publish from a browser with no terminal and no help, the category list lives in one module, search and tag browsing work, sharing a post previews as that post (confirmed with a real scraper against the live site), posts show a reading time, an RSS feed exists, every image is compressed with no duplication, a reader can browse the archive by year, by newest, or by tag, the repo carries no server/database/auth scaffolding it doesn't actually use, and the homepage hero carousel links to real posts. There is no open Core or Polish work left on this roadmap; new phases start from a fresh gap against `mission.md`, not from what's below.
+All thirteen phases are done: the site is public, the author can self-publish from a browser with no terminal and no help, the category list lives in one module, search and tag browsing work, sharing a post previews as that post (confirmed with a real scraper against the live site), posts show a reading time, an RSS feed exists, every image is compressed with no duplication, a reader can browse the archive by year, by newest, or by tag, the repo carries no server/database/auth scaffolding it doesn't actually use, the homepage hero carousel links to real posts, and the repo/brand identity and last Replit scaffolding traces are settled. There is no open Core or Polish work left on this roadmap; new phases start from a fresh gap against `mission.md`, not from what's below.
 
 ## Phase overview
 
@@ -33,14 +33,15 @@ All twelve phases are done: the site is public, the author can self-publish from
 | 10 | Sitewide "latest" block | Polish | A reader always has a way to see what's newest, from any post |
 | 11 | Tag-filter block (tag cloud) | Polish | A reader gets an at-a-glance sense of what she writes about most |
 | 12 | Content-driven hero carousel | Polish | The homepage hero links to real posts instead of being decoration |
+| 13 | Repo/brand rename and scaffolding cleanup | Polish | The repo, live URL, and docs agree on one identity, and no dead Replit tooling remains |
 
-**Sequencing notes.** Phase 2 depends on Phase 1 (the OAuth app and CMS config need a real production URL to authorize against). Phase 3 is deliberately placed before Phase 4 — Phase 4 adds new pages that would otherwise become the fifth and sixth hand-copies of the category list. Phase 8 depends on Phase 1 confirming static hosting as the long-term direction. Phases 9, 10, and 11 were originally scoped and built as a single phase (see the note at the top of Phase 9) — none of the three needs the others: 9 and 10 are pure derivations of `getAllPosts()`, and 11 depends only on Phase 4's tag plumbing (`getAllTags()`, `/tag/:tag`) already existing, not on 9 or 10. Phase 12 is a pure derivation of `getAllPosts()` too, the same category as 9 and 10. Everything else is independent.
+**Sequencing notes.** Phase 2 depends on Phase 1 (the OAuth app and CMS config need a real production URL to authorize against). Phase 3 is deliberately placed before Phase 4 — Phase 4 adds new pages that would otherwise become the fifth and sixth hand-copies of the category list. Phase 8 depends on Phase 1 confirming static hosting as the long-term direction. Phases 9, 10, and 11 were originally scoped and built as a single phase (see the note at the top of Phase 9) — none of the three needs the others: 9 and 10 are pure derivations of `getAllPosts()`, and 11 depends only on Phase 4's tag plumbing (`getAllTags()`, `/tag/:tag`) already existing, not on 9 or 10. Phase 12 is a pure derivation of `getAllPosts()` too, the same category as 9 and 10. Phase 13's scaffolding-cleanup task is the deferred half of Phase 8's "still deliberately not touched" note; its rename task depends on nothing before it. Everything else is independent.
 
 ---
 
 ## Phase 1 — Public deployment · Core · ✅ Done
 
-Live at https://prajaktacreations11.github.io/marathi-bytes/.
+Live at https://prajaktacreations11.github.io/prajakta-prabha/.
 
 **Functionality served:** the site is reachable at a public URL. Until this exists, no reader-facing part of the mission is real, and Phase 2 has nothing to authorize against.
 
@@ -62,13 +63,13 @@ Today `vite.config.ts` sets no `base` path and there is no deploy workflow, so n
 
 **Functionality served:** the author can publish a new poem herself, from a browser, with no terminal and no help. This is the single most load-bearing promise in `mission.md`.
 
-Decap CMS at `/admin` now authenticates in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`, deployed at `https://marathibytes-decap-oauth.kulkarni-aditya12.workers.dev`). The author has her own GitHub account, which now owns `prajaktacreations11/marathi-bytes`, and has published a real post end-to-end: logged in at `/admin`, created and published a poem, the commit landed on `main`, the deploy workflow rebuilt the site, and the post appeared live.
+Decap CMS at `/admin` now authenticates in production via a GitHub OAuth App and a Cloudflare Worker proxy (`oauth-proxy/`, deployed at `https://marathibytes-decap-oauth.kulkarni-aditya12.workers.dev`). The author has her own GitHub account, which now owns `prajaktacreations11/prajakta-prabha`, and has published a real post end-to-end: logged in at `/admin`, created and published a poem, the commit landed on `main`, the deploy workflow rebuilt the site, and the post appeared live.
 
 **Decision (2026-08-20):** the author (Aditya's wife) will use a dedicated GitHub account, tied to a dedicated Gmail kept separate from her personal one, and log in through GitHub's own screen — not a "Sign in with Google" button. The alternative (Netlify Identity + Git Gateway, which does offer literal Google sign-in) was ruled out to avoid depending on a second hosting platform just for auth. See `AUTHORING.md` for what she'll actually see.
 
 **Tasks**
 
-1. **Register a GitHub OAuth App** for the production domain. Purpose: give Decap a real identity to authenticate the author against the `prajaktacreations11/marathi-bytes` repo. *(Done — `MarathiBytes CMS` OAuth App registered, callback URL points at the Worker.)*
+1. **Register a GitHub OAuth App** for the production domain. Purpose: give Decap a real identity to authenticate the author against the `prajaktacreations11/prajakta-prabha` repo. *(Done — `MarathiBytes CMS` OAuth App registered, callback URL points at the Worker.)*
 2. **Deploy the auth proxy.** Purpose: Decap's GitHub backend needs a small server-side token exchange; built as a Cloudflare Worker in `oauth-proxy/` — this is the one piece that cannot be static. *(Done — deployed as `marathibytes-decap-oauth` on the `kulkarni-aditya12.workers.dev` subdomain, with `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, and `OAUTH_STATE_SECRET` set as Worker secrets.)*
 3. **Point the CMS at the proxy.** Purpose: update `config.yml` with the proxy's `base_url`/`auth_endpoint`. *(Done — `base_url` set to the real Worker URL and merged to `main`.)*
 4. **Confirm `local_backend` behaviour is correct for both modes.** Purpose: make sure local testing still works without the local flag hijacking the production login. *(Confirmed: Decap only engages the local proxy when the CMS is loaded from `localhost`, so `local_backend: true` is inert in production — no code change needed, documented in `config.yml`.)*
@@ -244,7 +245,7 @@ Before this phase there was exactly one way to browse without already knowing wh
 **Tasks**
 
 1. **Decide where the archive view lives.** *(Done. A new dedicated `/archive` route, reusing the existing `ContentCard` grid under year headings rather than inventing a new visual pattern — no sidebar was introduced anywhere, since no page on the site uses one and `design_guidelines.md` doesn't define one.)*
-2. **Add a chronological archive/timeline view.** *(Done — `ArchivePage.tsx` at `/archive`, grouping `getAllPosts()` by year, newest year first, reusing `ContentCard` in the same grid every other listing page uses. Grouped by year only, not year-and-month as originally scoped — the current post volume doesn't yet justify a second grouping level, and adding one later is a small, isolated change to `groupByYear()` if it ever does. Linked from the nav — added right after Home in `Header.tsx`, both desktop and mobile — and from a "View the full archive" link under the homepage's tag cloud.)*
+2. **Add a chronological archive/timeline view.** *(Done — `ArchivePage.tsx` at `/archive`, grouping `getAllPosts()` by year, newest year first, reusing `ContentCard` in the same grid every other listing page uses. Grouped by year only, not year-and-month as originally scoped — the current post volume doesn't yet justify a second grouping level, and adding one later is a small, isolated change to `groupByYear()` if it ever does. Linked from the nav — originally added right after Home in `Header.tsx`, both desktop and mobile; **relocated in Phase 13** to sit beside the search box instead, and relabeled "ब्लॉग संग्रह" — and from a "View the full archive" link under the homepage's tag cloud.)*
 3. **Keep it data-only.** *(Done — a pure derivation of `getAllPosts()`. No new dependency, no runtime fetch.)*
 
 **Done when:** a reader can reach any post by date, through a link that's visible, not a URL someone has to already know. ✅ Verified in the browser: the Archive page groups correctly and updates its tab title. `npm run check` and `npm run build` pass; console clean.
@@ -280,7 +281,7 @@ Before this phase, `PostPage.tsx`'s only "what else might you like" surface was 
 **Tasks**
 
 1. **Decide where the tag cloud lives.** *(Done — the homepage, the site's highest-traffic entry point.)*
-2. **Add a visible tag-filter block.** *(Done — `TagCloud.tsx` on the homepage. A genuine weighted cloud, not a flat pill list: font size scales across four buckets by each tag's share of `getAllTags()`'s count range, visually distinct from the uniform pill lists on `TagPage`/`SearchPage`, which serve a different purpose — an exhaustive list, not an at-a-glance "what does she write about most" overview. Every tag links into the existing `/tag/:tag` route.)*
+2. **Add a visible tag-filter block.** *(Done — `TagCloud.tsx` on the homepage. Originally a genuine weighted cloud, not a flat pill list: font size scaled across four buckets by each tag's share of `getAllTags()`'s count range, visually distinct from the uniform pill lists on `TagPage`/`SearchPage`. **Superseded in Phase 13**: with the current small post corpus, the weighting produced a stark two-level jump rather than a smooth gradient, so it now renders the same uniform `TagPill` as those other pages. Every tag links into the existing `/tag/:tag` route.)*
 3. **Keep it data-only.** *(Done — a pure derivation of `getAllTags()`. No new dependency, no runtime fetch.)*
 
 **Done when:** a reader can see which tags are used most, and reach any tag's posts in one click, from the homepage. ✅ Verified in the browser: tag cloud → `/tag/<tag>` navigation confirmed by click. `npm run check` and `npm run build` pass; console clean.
@@ -304,6 +305,23 @@ Phase 3 stripped the carousel's "View on Instagram →" links because they point
 7. **Verify.** *(Done — `npm run check` and `npm run build` both pass. Browser-verified against the live dev server: clicking a slide (both the wedding-thumbnail slide and the poetry-thumbnail slide) opens that exact post — confirmed via URL, tab title, and full rendered post content, not just a route change; the "next" arrow switches slides without navigating; console clean throughout.)*
 
 **Done when:** the homepage hero shows real posts, clicking (or tapping) a slide opens that post, and no hardcoded placeholder image data remains in `HomePage.tsx`. ✅ Confirmed 2026-09-10.
+
+---
+
+## Phase 13 — Repo/brand rename and scaffolding cleanup · Polish · ✅ Done
+
+**Functionality served:** the repo name, live URL, on-page brand, and docs all agree on one identity, and the codebase no longer carries dead Replit-only tooling alongside the one piece of it that's actually still useful.
+
+**Tasks**
+
+1. **Rename the repo and its production URL.** *(Done — `prajaktacreations11/marathi-bytes` → `prajaktacreations11/prajakta-prabha`, live at `https://prajaktacreations11.github.io/prajakta-prabha/`. Updated every hardcoded coupling to the old name: `vite.config.ts`'s production `base`, `seo.ts`'s `SITE_BASE_PATH`, `client/index.html`'s OG/canonical/RSS tags, `client/public/admin/config.yml`'s Decap `backend.repo`, `404.html`'s SPA-redirect comment, the local git `origin` remote, and every doc that named the old repo/URL. The actual GitHub-side rename is a manual step outside this codebase — no `gh` CLI or credentials were available to do it directly.)*
+2. **Update the English brand name.** *(Done — `MarathiBytes` → `प्राजक्तप्रभा` in `README.md`'s title, `spec/mission.md`'s opening line, the Decap admin page `<title>`, and `oauth-proxy/README.md`'s suggested OAuth App name. Left `spec/spec.md`'s Phase 2 record of the *already-registered* OAuth App name (`MarathiBytes CMS`) alone — that's a historical fact about what's live on GitHub today, not a to-do; renaming the actual OAuth App is a separate manual step this codebase can't perform.)*
+3. **Remove the remaining Replit scaffolding.** *(Done — the deferred half of Phase 8's "still deliberately not touched" note. Deleted `.replit` and the `cartographer`/`dev-banner` Vite plugins from `vite.config.ts`, along with their two now-unused devDependencies — both were gated behind `REPL_ID`, so they never actually ran outside a Replit container; pure dead code. Kept `@replit/vite-plugin-runtime-error-modal`: unlike the other two it's unconditional and provides a real dev-time error overlay in any environment, Replit or not, so removing it would have cost working functionality rather than dead weight.)*
+4. **Simplify the tag cloud to uniform tags.** *(Done — reverses part of Phase 11's decision. The weighted-by-frequency sizing looked correct in concept but, against the site's current small post corpus, produced a stark two-tag bold/large-vs-everything-else-small split rather than a smooth gradient. `TagCloud.tsx` now renders the same `TagPill` component `TagPage`/`SearchPage` already use — visually identical to those pages now, just a different subset of tags.)*
+5. **Relocate and relabel the archive nav link.** *(Done — "संग्रह" moved out of the main category nav row (added in Phase 9) to sit directly beside the search box, in both the desktop header and the mobile menu, and relabeled "ब्लॉग संग्रह". Still the same `/archive` route from Phase 9, unchanged.)*
+6. **Replace the stale favicon.** *(Done — `client/public/favicon.png` was still the default Replit logo left over from the original scaffold; replaced with the site's own image. The only reference to it (`client/index.html`'s `<link rel="icon">`) needed no change.)*
+
+**Done when:** `npm run check` and `npm run build` both pass, the built output's asset paths and meta tags resolve under the new repo name, and no page or doc still shows Replit's placeholder branding. ✅ Confirmed — `npm run check` and `npm run build` pass after each task; built `dist/public/index.html` verified to carry the new base path and OG/canonical URLs; browser-verified in the dev server that the tag cloud renders uniformly and the archive link sits next to search.
 
 ---
 
