@@ -117,18 +117,9 @@ export default function Header() {
                   Home
                 </Button>
               </Link>
-              <Link href="/archive">
-                <Button
-                  variant={location === '/archive' ? 'secondary' : 'ghost'}
-                  className="font-medium"
-                  data-testid="nav-archive"
-                >
-                  संग्रह
-                </Button>
-              </Link>
               {categories.map((category) => (
                 <Link key={category.id} href={`/category/${category.id}`}>
-                  <Button 
+                  <Button
                     variant={location === `/category/${category.id}` ? 'secondary' : 'ghost'}
                     className="font-medium"
                     data-testid={`nav-${category.id}`}
@@ -138,7 +129,7 @@ export default function Header() {
                 </Link>
               ))}
               <Link href="/about">
-                <Button 
+                <Button
                   variant={location === '/about' ? 'secondary' : 'ghost'}
                   className="font-medium"
                   data-testid="nav-about"
@@ -148,19 +139,30 @@ export default function Header() {
               </Link>
             </nav>
 
-            <form onSubmit={handleSearch} className="hidden md:flex items-center gap-2 flex-1 max-w-xs ml-auto">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                  data-testid="input-search"
-                />
-              </div>
-            </form>
+            <div className="hidden md:flex items-center gap-2 flex-1 max-w-xs ml-auto">
+              <Link href="/archive">
+                <Button
+                  variant={location === '/archive' ? 'secondary' : 'ghost'}
+                  className="font-medium shrink-0"
+                  data-testid="nav-archive"
+                >
+                  ब्लॉग संग्रह
+                </Button>
+              </Link>
+              <form onSubmit={handleSearch} className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                    data-testid="input-search"
+                  />
+                </div>
+              </form>
+            </div>
 
             <Button
               variant="ghost"
@@ -180,11 +182,6 @@ export default function Header() {
                   Home
                 </Button>
               </Link>
-              <Link href="/archive" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant={location === '/archive' ? 'secondary' : 'ghost'} className="w-full justify-start" data-testid="mobile-nav-archive">
-                  संग्रह
-                </Button>
-              </Link>
               {categories.map((category) => (
                 <Link key={category.id} href={`/category/${category.id}`} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant={location === `/category/${category.id}` ? 'secondary' : 'ghost'} className="w-full justify-start" data-testid={`mobile-nav-${category.id}`}>
@@ -197,19 +194,26 @@ export default function Header() {
                   About
                 </Button>
               </Link>
-              <form onSubmit={handleSearch} className="pt-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                    data-testid="mobile-input-search"
-                  />
-                </div>
-              </form>
+              <div className="pt-2 flex items-center gap-2">
+                <Link href="/archive" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant={location === '/archive' ? 'secondary' : 'ghost'} className="shrink-0" data-testid="mobile-nav-archive">
+                    ब्लॉग संग्रह
+                  </Button>
+                </Link>
+                <form onSubmit={handleSearch} className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      type="search"
+                      placeholder="Search..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                      data-testid="mobile-input-search"
+                    />
+                  </div>
+                </form>
+              </div>
             </div>
           )}
         </div>
