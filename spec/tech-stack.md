@@ -47,7 +47,7 @@ Post parsing (`client/src/lib/posts.ts`) is environment-agnostic on purpose: `cl
 
 ## Original scaffold origin
 
-- **Replit** — `.replit`, and the `@replit/vite-plugin-cartographer` / `@replit/vite-plugin-dev-banner` / `@replit/vite-plugin-runtime-error-modal` devDependencies are Replit's AI-agent dev tooling. They're harmless in a non-Replit environment (they no-op outside a Replit container) but are a strong signal of where this codebase came from.
+- **Replit** — this codebase was originally scaffolded on Replit. The `.replit` config and the `@replit/vite-plugin-cartographer` / `@replit/vite-plugin-dev-banner` devDependencies were Replit's AI-agent dev tooling, gated behind `REPL_ID` so they never actually ran outside a Replit container; both the config file and those two devDependencies were removed once development moved off Replit for good. `@replit/vite-plugin-runtime-error-modal` was kept — unlike the other two, it's unconditional and provides a real dev-time error overlay regardless of environment.
 
 ## Tooling notes worth knowing
 

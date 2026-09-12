@@ -21,7 +21,7 @@ There is no test suite/framework configured in this repo.
 
 ## Architecture
 
-This is a **client-rendered SPA blog**, not a traditional full-stack app, despite the Express scaffold. It was originally scaffolded on Replit (see `.replit`, the `@replit/vite-plugin-*` devDependencies).
+This is a **client-rendered SPA blog**, not a traditional full-stack app, despite the Express scaffold. It was originally scaffolded on Replit; the `.replit` config and the Replit-only `cartographer`/`dev-banner` Vite plugins (gated behind `REPL_ID`, which is never set outside a Replit container) were removed as dead weight once development moved off Replit. `@replit/vite-plugin-runtime-error-modal` is the one piece kept — it's an unconditional dev-time error overlay that works the same in any environment, Replit or not.
 
 **Content model — this is the core thing to understand:**
 Posts are markdown files with YAML frontmatter under `client/src/content/{poetry,articles,ukhane}/*.md`. Frontmatter is parsed with `js-yaml` (not a hand-rolled parser — it must stay a real YAML parser since content can come from the CMS below, which emits multi-line YAML lists). The filename (minus `.md`) becomes the post's URL slug (`/post/<slug>`); the containing folder becomes its category. A fourth `instagram` category once existed in the loader without any route or nav entry; it was removed in Phase 3 — social media is a link out from this site, never a feed pulled in (see `spec/spec.md` Phase 3 for the reasoning).
