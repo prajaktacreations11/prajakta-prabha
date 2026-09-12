@@ -21,7 +21,7 @@ In the GitHub account that owns the repo (`prajaktacreations11`):
 1. Go to **Settings → Developer settings → OAuth Apps → New OAuth App**
    (direct link: https://github.com/settings/applications/new)
 2. Fill in:
-   - **Application name**: `MarathiBytes CMS` (anything recognizable)
+   - **Application name**: `प्राजक्तप्रभा CMS` (anything recognizable)
    - **Homepage URL**: `https://prajaktacreations11.github.io/prajakta-prabha/`
    - **Authorization callback URL**: `https://<your-worker-subdomain>.workers.dev/callback`
      (you'll get the real `workers.dev` URL after the first `wrangler deploy` in step 2 —

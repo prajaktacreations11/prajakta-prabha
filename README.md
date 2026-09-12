@@ -1,4 +1,4 @@
-# MarathiBytes
+# प्राजक्तप्रभा
 
 A personal creative archive for **प्राजक्तप्रभा**'s poetry, personal essays, and traditional Marathi verse — built to be beautiful, dignified, and entirely hers to maintain without touching code, git, or a terminal.
 

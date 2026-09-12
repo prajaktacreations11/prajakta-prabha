@@ -1,6 +1,6 @@
 # Mission
 
-MarathiBytes exists to give प्राजक्तप्रभा's creative work — poetry, personal essays, and traditional Marathi verse — a home online that is beautiful, dignified, and entirely hers to maintain.
+प्राजक्तप्रभा exists to give प्राजक्तप्रभा's creative work — poetry, personal essays, and traditional Marathi verse — a home online that is beautiful, dignified, and entirely hers to maintain.
 
 ## Why this project exists
 
