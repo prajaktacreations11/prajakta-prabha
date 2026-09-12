@@ -10,7 +10,7 @@ import AboutPage from "@/pages/AboutPage";
 import NotFound from "@/pages/not-found";
 import ScrollToTop from "@/components/ScrollToTop";
 
-// import.meta.env.BASE_URL matches vite.config.ts's `base` ("/" in dev, "/marathi-bytes/" in prod)
+// import.meta.env.BASE_URL matches vite.config.ts's `base` ("/" in dev, "/prajakta-prabha/" in prod)
 // so routing works correctly whether the app is served at the domain root or a GitHub Pages subpath.
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 

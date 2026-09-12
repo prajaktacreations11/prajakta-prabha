@@ -22,7 +22,7 @@ In the GitHub account that owns the repo (`prajaktacreations11`):
    (direct link: https://github.com/settings/applications/new)
 2. Fill in:
    - **Application name**: `MarathiBytes CMS` (anything recognizable)
-   - **Homepage URL**: `https://prajaktacreations11.github.io/marathi-bytes/`
+   - **Homepage URL**: `https://prajaktacreations11.github.io/prajakta-prabha/`
    - **Authorization callback URL**: `https://<your-worker-subdomain>.workers.dev/callback`
      (you'll get the real `workers.dev` URL after the first `wrangler deploy` in step 2 —
      deploy once to see it, then come back and fill in this field, or add a custom

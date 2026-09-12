@@ -35,7 +35,7 @@ Post parsing (`client/src/lib/posts.ts`) is environment-agnostic on purpose: `cl
 
 ## Content authoring
 
-**Decap CMS** (`client/public/admin/`) — a git-backed headless CMS. It gives a non-technical author a web form that commits Markdown files with correct frontmatter directly to this repo via the GitHub API, so the content model above stays the single source of truth. Configured for the `prajaktacreations11/marathi-bytes` repo, `main` branch; supports local testing without OAuth via `local_backend: true` + `npx decap-server`.
+**Decap CMS** (`client/public/admin/`) — a git-backed headless CMS. It gives a non-technical author a web form that commits Markdown files with correct frontmatter directly to this repo via the GitHub API, so the content model above stays the single source of truth. Configured for the `prajaktacreations11/prajakta-prabha` repo, `main` branch; supports local testing without OAuth via `local_backend: true` + `npx decap-server`.
 
 **Production auth** — a Cloudflare Worker (`oauth-proxy/`, deployed separately from the main site) proxies GitHub's OAuth token exchange, since the client secret can't live in the browser. The author logs in with a dedicated GitHub account through GitHub's own screen (not Google sign-in — see `spec.md` Phase 2 for why). See `oauth-proxy/README.md` for deployment and `AUTHORING.md` for the author-facing walkthrough.
 
@@ -64,7 +64,7 @@ Post parsing (`client/src/lib/posts.ts`) is environment-agnostic on purpose: `cl
 **Decided: GitHub Pages**, deployed via GitHub Actions from this repo, at the default project URL:
 
 ```
-https://prajaktacreations11.github.io/marathi-bytes/
+https://prajaktacreations11.github.io/prajakta-prabha/
 ```
 
 No custom domain for now — free, zero DNS setup, and a custom domain can be attached later without changing the deploy mechanism. See `spec.md` Phase 1 for the remaining setup tasks (base path, workflow, SPA deep-link handling).

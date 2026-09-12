@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: prajaktacreations11/marathi-bytes
+  repo: prajaktacreations11/prajakta-prabha
   branch: main
   # OAuth proxy deployed from oauth-proxy/ (see oauth-proxy/README.md).
   # Only used when the CMS is loaded from the production URL, not localhost.

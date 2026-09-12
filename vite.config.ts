@@ -25,7 +25,7 @@ export default defineConfig({
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
-  base: process.env.NODE_ENV === "production" ? "/marathi-bytes/" : "/",
+  base: process.env.NODE_ENV === "production" ? "/prajakta-prabha/" : "/",
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,

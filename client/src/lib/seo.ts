@@ -13,7 +13,7 @@ export const SITE_ORIGIN = 'https://prajaktacreations11.github.io';
  * it automatically — vite.config.ts pulls in Vite/Replit-only imports that
  * don't belong in a plain Node script — so if one changes, so must the other.
  */
-export const SITE_BASE_PATH = '/marathi-bytes/';
+export const SITE_BASE_PATH = '/prajakta-prabha/';
 
 export const SITE_URL = SITE_ORIGIN + SITE_BASE_PATH;
 

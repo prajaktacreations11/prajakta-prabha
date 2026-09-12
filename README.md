@@ -2,7 +2,7 @@
 
 A personal creative archive for **प्राजक्तप्रभा**'s poetry, personal essays, and traditional Marathi verse — built to be beautiful, dignified, and entirely hers to maintain without touching code, git, or a terminal.
 
-**Live site:** https://prajaktacreations11.github.io/marathi-bytes/
+**Live site:** https://prajaktacreations11.github.io/prajakta-prabha/
 
 This is deliberately *not* a general-purpose blogging platform or a commercial content product — see [`spec/mission.md`](spec/mission.md) for the full reasoning and explicit non-goals.
 
